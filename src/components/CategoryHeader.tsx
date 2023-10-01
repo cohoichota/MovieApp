@@ -3,7 +3,6 @@ import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 
 const CategoryHeader = (props: any) => {
-  console.log(props);
   return (
     <View>
       <Text style={styles.text}>{props.title}</Text>

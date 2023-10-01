@@ -19,9 +19,9 @@ import {
 import InputHeader from '../components/InputHeader';
 import {NavigationProp} from '@react-navigation/native';
 import CategoryHeader from '../components/CategoryHeader';
-import SubMovieCard from '../components/SubMovieCard';
-import MovieCard from '../components/MovieCard';
 import {MainNavigatorParamList} from '../navigators/types';
+import MovieCard from '../components/MovieCard';
+import SubMovieCard from '../components/SubMovieCard';
 
 interface UpcomingMovie {
   id: number;
@@ -116,7 +116,6 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       </SafeAreaView>
     );
   }
-  console.log('width', width);
 
   return (
     <SafeAreaView style={styles.areaView}>

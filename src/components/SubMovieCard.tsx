@@ -10,10 +10,10 @@ import {
 
 interface SubMovieCardProps {
   shouldMarginAtEnd: boolean;
-  handlePressIcon: Function;
+  handlePressIcon: () => void;
   cardWith?: number;
-  isFirst: boolean;
-  isLast: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
   title: string;
   imagePath: string;
   shouldMarginAround?: boolean;
