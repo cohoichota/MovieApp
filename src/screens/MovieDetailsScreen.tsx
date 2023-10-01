@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const MovieDetailsScreen = () => {
+const MovieDetailsScreen = ({navigation}) => {
   return (
     <View>
       <Text>MovieDetailsScreen</Text>
