@@ -20,6 +20,28 @@ import AppHeader from '../components/AppHeader';
 import CustomIcon from '../components/CustomIcon';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Toast from 'react-native-simple-toast';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import {MainNavigatorParamList} from '../navigators/types';
+
+type SeatBookingScreenNavigationProps = NavigationProp<
+  MainNavigatorParamList,
+  'SeatBooking'
+>;
+
+type SeatBookingScreenRouteProps = RouteProp<
+  MainNavigatorParamList,
+  'SeatBooking'
+>;
+
+type SeatBookingScreenProps = {
+  navigation: SeatBookingScreenNavigationProps;
+  route: SeatBookingScreenRouteProps;
+};
 
 interface TempDate {
   date: number;
@@ -89,7 +111,9 @@ const generateSeat = (): SeatArray[][] => {
   return rowArray;
 };
 
-const SeatBookingScreen = ({navigation, route}: any) => {
+const SeatBookingScreen = () => {
+  const route = useRoute<SeatBookingScreenProps['route']>();
+  const navigation = useNavigation<SeatBookingScreenProps['navigation']>();
   const [selectedDateIndex, setSelectedDateIndex] = useState<number>();
   const [price, setPrice] = useState<number>(0);
   const [twoDSeatArray, setTwoDSeatArray] = useState<SeatArray[][]>(
@@ -164,11 +188,6 @@ const SeatBookingScreen = ({navigation, route}: any) => {
         Toast.LONG,
         Toast.TOP,
       );
-      // AlertIOS.(
-      //   'Please Select Seats, Date and Time of the Show',
-      //   ToastAndroid.SHORT,
-      //   ToastAndroid.BOTTOM,
-      // );
     }
   };
 

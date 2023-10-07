@@ -17,12 +17,16 @@ interface MovieCardProps {
   isLast: boolean;
   title: string;
   imagePath: string;
-  genre: any;
+  genre: number[];
   vote_average: number;
   vote_count: number;
 }
 
-const genres: any = {
+type Genre = {
+  [key: number]: string;
+};
+
+const genres: Genre = {
   28: 'Action',
   12: 'Adventure',
   16: 'Animation',
@@ -76,7 +80,7 @@ const MovieCard = (props: MovieCardProps) => {
           </Text>
 
           <View style={styles.genreContainer}>
-            {props.genre.map((item: any) => {
+            {props.genre.map(item => {
               return (
                 <View key={item} style={styles.genreBox}>
                   <Text style={styles.genreText}>{genres[item]}</Text>

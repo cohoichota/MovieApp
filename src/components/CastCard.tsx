@@ -8,7 +8,17 @@ import {
   SPACING,
 } from '../theme/theme';
 
-const CastCard = (props: any) => {
+interface CastCardProps {
+  shouldMarginatedAtEnd: boolean;
+  cardWidth: number;
+  isFirst: boolean;
+  isLast: boolean;
+  imagePath: string;
+  title: string;
+  subtitle: string;
+}
+
+const CastCard = (props: CastCardProps) => {
   return (
     <View
       style={[

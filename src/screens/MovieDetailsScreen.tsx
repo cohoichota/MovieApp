@@ -23,6 +23,55 @@ import CustomIcon from '../components/CustomIcon';
 import LinearGradient from 'react-native-linear-gradient';
 import CategoryHeader from '../components/CategoryHeader';
 import CastCard from '../components/CastCard';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import {MainNavigatorParamList} from '../navigators/types';
+
+type MovieDetailsScreenNavigationProps = NavigationProp<
+  MainNavigatorParamList,
+  'MovieDetails'
+>;
+
+type MovieDetailsScreenRouteProps = RouteProp<
+  MainNavigatorParamList,
+  'MovieDetails'
+>;
+
+type MovieDetailsScreenProps = {
+  navigation: MovieDetailsScreenNavigationProps;
+  route: MovieDetailsScreenRouteProps;
+};
+
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface MovieDetails {
+  backdrop_path: string;
+  poster_path: string;
+  runtime: number;
+  original_title: string;
+  genres: Genre[];
+  tagline: string | null;
+  vote_average: number;
+  vote_count: number;
+  release_date: string;
+  overview: string;
+}
+
+interface CastMember {
+  id: number;
+  profile_path: string;
+  original_name: string;
+  character: string;
+}
+
+type MovieCastData = CastMember[];
 
 const fetchMovieList = async (url: string) => {
   try {
@@ -35,9 +84,13 @@ const fetchMovieList = async (url: string) => {
   }
 };
 
-const MovieDetailsScreen = ({navigation, route}: any) => {
-  const [movieData, setMovieData] = useState<any>();
-  const [movieCastData, setMovieCastData] = useState<any>();
+const MovieDetailsScreen = () => {
+  const route = useRoute<MovieDetailsScreenProps['route']>();
+  const navigation = useNavigation<MovieDetailsScreenProps['navigation']>();
+  const [movieData, setMovieData] = useState<MovieDetails | null>(null);
+  const [movieCastData, setMovieCastData] = useState<MovieCastData | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +108,7 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
     fetchData();
   }, [route.params.movieId]);
 
-  if (!movieData && !movieCastData) {
+  if (!movieData || !movieCastData) {
     return (
       <ScrollView
         style={styles.container}
@@ -84,7 +137,7 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
       <View>
         <ImageBackground
           source={{
-            uri: baseImagePath('w780', movieData?.backdrop_path),
+            uri: baseImagePath('w780', movieData.backdrop_path),
           }}
           style={styles.imageBG}>
           <LinearGradient
@@ -99,9 +152,9 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
             </View>
           </LinearGradient>
         </ImageBackground>
-        <View style={styles.imageBG}></View>
+        <View style={styles.imageBG} />
         <Image
-          source={{uri: baseImagePath('w342', movieData?.poster_path)}}
+          source={{uri: baseImagePath('w342', movieData.poster_path)}}
           style={styles.cardImage}
         />
       </View>
@@ -109,15 +162,15 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
       <View style={styles.timeContainer}>
         <CustomIcon name="clock" style={styles.clockIcon} />
         <Text style={styles.runtimeText}>
-          {Math.floor(movieData?.runtime / 60)}h{' '}
-          {Math.floor(movieData?.runtime % 60)}m
+          {Math.floor(movieData.runtime / 60)}h{' '}
+          {Math.floor(movieData.runtime % 60)}m
         </Text>
       </View>
 
       <View>
         <Text style={styles.title}>{movieData?.original_title}</Text>
         <View style={styles.genreContainer}>
-          {movieData?.genres.map((item: any) => {
+          {movieData?.genres.map(item => {
             return (
               <View style={styles.genreBox} key={item.id}>
                 <Text style={styles.genreText}>{item.name}</Text>
@@ -132,11 +185,11 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
         <View style={styles.rateContainer}>
           <CustomIcon name="star" style={styles.starIcon} />
           <Text style={styles.runtimeText}>
-            {movieData?.vote_average.toFixed(1)} ({movieData?.vote_count})
+            {movieData?.vote_average.toFixed(1)} ({movieData.vote_count})
           </Text>
           <Text style={styles.runtimeText}>
             {movieData?.release_date.substring(8, 10)}{' '}
-            {new Date(movieData?.release_date).toLocaleString('default', {
+            {new Date(movieData.release_date).toLocaleString('default', {
               month: 'long',
             })}{' '}
             {movieData?.release_date.substring(0, 4)}
@@ -149,7 +202,7 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
         <CategoryHeader title="Top Cast" />
         <FlatList
           data={movieCastData}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={item => item.id.toString()}
           horizontal
           contentContainerStyle={styles.containerGap24}
           renderItem={({item, index}) => (
@@ -157,7 +210,7 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
               shouldMarginatedAtEnd={true}
               cardWidth={80}
               isFirst={index === 0 ? true : false}
-              isLast={index === movieCastData?.length - 1 ? true : false}
+              isLast={index === movieCastData.length - 1 ? true : false}
               imagePath={baseImagePath('w185', item.profile_path)}
               title={item.original_name}
               subtitle={item.character}
@@ -169,7 +222,7 @@ const MovieDetailsScreen = ({navigation, route}: any) => {
           <TouchableOpacity
             style={styles.buttonBG}
             onPress={() => {
-              navigation.push('SeatBooking', {
+              navigation.navigate('SeatBooking', {
                 BgImage: baseImagePath('w780', movieData.backdrop_path),
                 PosterImage: baseImagePath('original', movieData.poster_path),
               });

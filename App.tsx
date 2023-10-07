@@ -7,7 +7,7 @@ import SeatBookingScreen from './src/screens/SeatBookingScreen';
 
 const Stack = createNativeStackNavigator();
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -35,5 +35,3 @@ const App = () => {
 };
 
 export default App;
-
-// const styles = StyleSheet.create({});

@@ -9,14 +9,20 @@ import {
   SPACING,
 } from '../theme/theme';
 
-const AppHeader = (props: any) => {
+interface AppHeaderProps {
+  name: string;
+  header: string;
+  action: () => void;
+}
+
+const AppHeader = (props: AppHeaderProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.iconBG} onPress={() => props.action()}>
         <CustomIcon name={props.name} style={styles.iconStyle} />
       </TouchableOpacity>
       <Text style={styles.headerText}>{props.header}</Text>
-      <View style={styles.emptyContainer}></View>
+      <View style={styles.emptyContainer} />
     </View>
   );
 };

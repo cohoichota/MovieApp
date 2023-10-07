@@ -18,6 +18,13 @@ import {
 } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import {MainNavigatorParamList} from '../navigators/types';
 
 interface TempDate {
   date: number;
@@ -31,7 +38,21 @@ interface TicketData {
   ticketImage: string;
 }
 
-const TicketScreen = ({navigation, route}: any) => {
+type TicketScreenNavigationProps = NavigationProp<
+  MainNavigatorParamList,
+  'Ticket'
+>;
+
+type TicketScreenRouteProps = RouteProp<MainNavigatorParamList, 'Ticket'>;
+
+type TicketScreenProps = {
+  navigation: TicketScreenNavigationProps;
+  route: TicketScreenRouteProps;
+};
+
+const TicketScreen = () => {
+  const route = useRoute<TicketScreenProps['route']>();
+  const navigation = useNavigation<TicketScreenProps['navigation']>();
   const [ticketData, setTicketData] = useState<TicketData>(route.params);
 
   useEffect(() => {
@@ -47,7 +68,7 @@ const TicketScreen = ({navigation, route}: any) => {
     };
 
     getLocalStorageData();
-  }, []);
+  }, [route]);
 
   if (ticketData === undefined || ticketData === null) {
     return (
@@ -110,11 +131,9 @@ const TicketScreen = ({navigation, route}: any) => {
             <View style={styles.subtitleContainer}>
               <Text style={styles.subheading}>Seats</Text>
               <Text style={styles.subtitle}>
-                {ticketData?.seatArray
-                  .slice(0, 3)
-                  .map((item: any, index: number, arr: any) => {
-                    return item + (index === arr.length - 1 ? '' : ', ');
-                  })}
+                {ticketData?.seatArray.slice(0, 3).map((item, index, arr) => {
+                  return item + (index === arr.length - 1 ? '' : ', ');
+                })}
               </Text>
             </View>
           </View>

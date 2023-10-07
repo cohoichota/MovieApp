@@ -2,7 +2,11 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 
-const CategoryHeader = (props: any) => {
+interface CategoryHeaderProps {
+  title: string;
+}
+
+const CategoryHeader = (props: CategoryHeaderProps) => {
   return (
     <View>
       <Text style={styles.text}>{props.title}</Text>
