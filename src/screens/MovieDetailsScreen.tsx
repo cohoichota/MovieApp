@@ -35,7 +35,7 @@ const fetchMovieList = async (url: string) => {
   }
 };
 
-const MovieDetailsScreen = ({navigation, route}) => {
+const MovieDetailsScreen = ({navigation, route}: any) => {
   const [movieData, setMovieData] = useState<any>();
   const [movieCastData, setMovieCastData] = useState<any>();
 

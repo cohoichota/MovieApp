@@ -9,8 +9,6 @@ import {
 } from '../theme/theme';
 
 const CastCard = (props: any) => {
-  console.log('huhu');
-  console.log(props);
   return (
     <View
       style={[
